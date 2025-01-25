@@ -26,8 +26,30 @@ public class ParkingService {
 	}
 	
 	public ParkingEntity updateParkingSlot(ParkingEntity editParkingSlot) {
-		return parkingRepository.save(editParkingSlot);
+	    Optional<ParkingEntity> existingParkingSlot = parkingRepository.findById(editParkingSlot.getParkingId());
+	    
+	    if (existingParkingSlot.isPresent()) {
+	        ParkingEntity updatedParkingSlot = existingParkingSlot.get();
+//	        if (editParkingSlot.getParkingNumber() != null) {
+//	            updatedParkingSlot.setParkingNumber(editParkingSlot.getParkingNumber());
+//	        }
+//	        if (editParkingSlot.getParkingBuilding() != null) {
+//	            updatedParkingSlot.setParkingBuilding(editParkingSlot.getParkingBuilding());
+//	        }
+//	        if (editParkingSlot.getParkingFloor() != null) {
+//	            updatedParkingSlot.setParkingFloor(editParkingSlot.getParkingFloor());
+//	        }
+//	        if (editParkingSlot.getParkingType() != null) {
+//	            updatedParkingSlot.setParkingType(editParkingSlot.getParkingType());
+//	        }
+	        updatedParkingSlot.setParkingAvailable(editParkingSlot.isParkingAvailable() || editParkingSlot.isParkingAvailable() == updatedParkingSlot.isParkingAvailable());
+	        
+	        return parkingRepository.save(updatedParkingSlot);
+	    } else {
+	        return null;
+	    }
 	}
+
 	
 	public void deleteParkingSlot(int pId) {
 		parkingRepository.deleteById(pId);
